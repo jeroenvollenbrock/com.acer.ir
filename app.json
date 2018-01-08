@@ -1,0 +1,324 @@
+{
+  "id": "com.acer.ir",
+  "name": {
+    "en": "Acer TV IR"
+  },
+  "version": "1.1.0",
+  "compatibility": ">=1.5.3",
+  "author": {
+    "name": "Athom B.V.",
+    "email": "info@athom.nl"
+  },
+  "description": "This app enables Homey to send IR remote signals to your LG TV",
+  "category": "video",
+  "images": {
+    "small": "./assets/images/small.jpg",
+    "large": "./assets/images/large.jpg"
+  },
+  "permissions": [
+    "homey:wireless:ir"
+  ],
+  "signals": {
+    "433": {},
+    "868": {},
+    "ir": {
+      "acer_tv": {
+        "sof": [9000, 4500],
+        "eof": [563],
+        "words": [
+            [562, 563],
+            [562, 1688]
+        ],
+        "packing": true,
+        "prefixData": [134, 198],
+        "repetitions": 1,
+        "options": {
+          "cmdNumberPrefix": "DIGIT_",
+          "minTxInterval": 250
+        },
+        "cmds": {
+          "POWER_TOGGLE": [
+            128,
+            127
+          ],
+          "MUTE_TOGGLE": [
+            120,
+            135
+          ],
+          "SRC_TV": [
+            48,
+            207
+          ],
+          "SRC_PC": [
+            36,
+            219
+          ],
+          "SRC_AV": [
+            68,
+            187
+          ],
+          "SRC_SCART": [
+            196,
+            59
+          ],
+          "SLEEP": [
+            4,
+            251
+          ],
+          "ZOOM": [
+            100,
+            155
+          ],
+          "DIGIT_0": [
+            88,
+            167
+          ],
+          "DIGIT_1": [
+            136,
+            119
+          ],
+          "DIGIT_2": [
+            72,
+            183
+          ],
+          "DIGIT_3": [
+            200,
+            55
+          ],
+          "DIGIT_4": [
+            40,
+            215
+          ],
+          "DIGIT_5": [
+            168,
+            87
+          ],
+          "DIGIT_6": [
+            104,
+            151
+          ],
+          "DIGIT_7": [
+            232,
+            23
+          ],
+          "DIGIT_8": [
+            24,
+            231
+          ],
+          "DIGIT_9": [
+            152,
+            103
+          ],
+          "AGAIN": [
+            56,
+            199
+          ],
+          "ENTER": [
+            164,
+            91
+          ],
+          "MENU": [
+            248,
+            7
+          ],
+          "UP": [
+            2,
+            253
+          ],
+          "DOWN": [
+            34,
+            221
+          ],
+          "RIGHT": [
+            194,
+            61
+          ],
+          "LEFT": [
+            130,
+            125
+          ],
+          "OK": [
+            66,
+            189
+          ],
+          "VOLUME_UP": [
+            32,
+            223
+          ],
+          "VOLUME_DOWN": [
+            160,
+            95
+          ],
+          "CHANNEL_UP": [
+            64,
+            191
+          ],
+          "CHANNEL_DOWN": [
+            192,
+            63
+          ],
+          "SUBTITLE": [
+            148,
+            107
+          ],
+          "TEXT": [
+            82,
+            173
+          ],
+          "RED": [
+            92,
+            163
+          ],
+          "GREEN": [
+            220,
+            35
+          ],
+          "YELLOW": [
+            60,
+            195
+          ],
+          "BLUE": [
+            188,
+            67
+          ],
+          "display": [
+            96,
+            159
+          ],
+          "wide": [
+            224,
+            31
+          ],
+          "srs": [
+            132,
+            123
+          ],
+          "ebutton": [
+            166,
+            89
+          ],
+          "pip": [
+            0,
+            255
+          ],
+          "swap": [
+            112,
+            143
+          ],
+          "active": [
+            144,
+            111
+          ],
+          "position": [
+            176,
+            79
+          ],
+          "sizemode": [
+            8,
+            247
+          ],
+          "index": [
+            240,
+            15
+          ],
+          "reveal": [
+            210,
+            45
+          ],
+          "size": [
+            208,
+            47
+          ],
+          "mix": [
+            20,
+            235
+          ],
+          "hold": [
+            98,
+            157
+          ],
+          "mpx": [
+            228,
+            27
+          ]
+        }
+      }
+    }
+  },
+  "drivers": [
+    {
+      "id": "acer_tv",
+      "name": {
+        "en": "LG TV Remote",
+        "nl": "LG TV Afstandsbediening"
+      },
+      "class": "tv",
+      "capabilities": [
+        "onoff",
+        "volume_mute",
+        "volume_up",
+        "volume_down",
+        "channel_up",
+        "channel_down"
+      ],
+      "images": {
+        "small": "./ir_generator/assets/images/small.jpg",
+        "large": "./ir_generator/assets/images/large.jpg"
+      },
+      "pair": [
+        {
+          "id": "generic_check_device",
+          "navigation": {}
+        },
+        {
+          "id": "generic_done",
+          "navigation": {}
+        }
+      ]
+    }
+  ],
+  "flow": {
+    "triggers": [],
+    "conditions": [],
+    "actions": [
+      {
+        "id": "acer_tv:send_cmd",
+        "title": {
+          "en": "Send Command\u0000",
+          "nl": "Verzend Commando\u0000"
+        },
+        "args": [
+          {
+            "name": "cmd",
+            "type": "autocomplete"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=acer_tv"
+          }
+        ]
+      },
+      {
+        "id": "acer_tv:send_cmd_number",
+        "title": {
+          "en": "Set Channel\u0000",
+          "nl": "Zet op Kanaal\u0000"
+        },
+        "args": [
+          {
+            "name": "number",
+            "type": "number",
+            "min": "0",
+            "max": "9999"
+          },
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=acer_tv"
+          }
+        ]
+      }
+    ]
+  }
+}
